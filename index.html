@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>بث مباشر فيسبوك</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .video-wrapper {
+      max-width: 900px;
+      width: 100%;
+      background: #1e1e1e;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .video-wrapper iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+    }
+    .controls {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+    .controls button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #ff4500;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .controls button:hover {
+      background: #e03e00;
+    }
+  </style>
+</head>
+<body>
+
+<div class="video-wrapper">
+  <iframe id="fbVideo"
+    src="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/share/v/1HPXuVuE34/&show_text=false&width=800"
+    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+    allowfullscreen>
+  </iframe>
+
+  <div class="controls">
+    <button onclick="playVideo()">تشغيل</button>
+    <button onclick="pauseVideo()">إيقاف</button>
+  </div>
+</div>
+
+<script>
+  const fbIframe = document.getElementById('fbVideo');
+  function playVideo() {
+    // التحكم بالفيديو محدودة عبر iframe لفيسبوك
+    alert("لتشغيل الفيديو، استخدم أزرار التشغيل داخل البث المباشر نفسه.");
+  }
+  function pauseVideo() {
+    alert("إيقاف الفيديو ممكن فقط من داخل واجهة فيسبوك.");
+  }
+</script>
+
+</body>
+</html>
