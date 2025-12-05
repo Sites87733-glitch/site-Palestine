@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بث مباشر - فريق صقور بادان</title>
+<style>
+  /* --- قاعدة عامة --- */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0d0d0d;
+    color: #fff;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  header {
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(90deg, #1a1a1a, #333);
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+  }
+
+  .video-container {
+    width: 90%;
+    max-width: 950px;
+    margin: 30px auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+    background: #000;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .video-container:hover {
+    transform: scale(1.005);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.8);
+  }
+
+  .fb-video, iframe {
+    width: 100%;
+    height: 520px;
+  }
+
+  .video-info {
+    background: #1b1b1b;
+    padding: 20px;
+    border-top: 4px solid #f1c40f;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .video-info h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f1c40f;
+  }
+
+  .video-controls {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+  }
+
+  .video-controls button {
+    background: linear-gradient(135deg, #f1c40f, #e67e22);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #121212;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+
+  .video-controls button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.7);
+  }
+
+  .like-active {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, #ffdd00, #ff9900);
+  }
+
+  /* فقاعات الإعجاب */
+  #likeParticles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .likeParticle {
+    position: absolute;
+    opacity: 0.9;
+    animation: floatUp 1.5s ease-out forwards;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    50% { transform: translateY(-50px) scale(1.3); opacity: 1; }
+    100% { transform: translateY(-100px) scale(1); opacity: 0; }
+  }
+
+  .ended-message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(18, 18, 18, 0.95);
+    color: #f1c40f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    display: none;
+    z-index: 5;
+  }
+
+  footer {
+    margin-top: auto;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(90deg, #1a1a1a, #333);
+    font-size: 0.95rem;
+    color: #ccc;
+  }
+
+  @media (max-width: 600px) {
+    .fb-video, iframe { height: 280px; }
+    .video-controls button { padding: 10px 18px; font-size: 0.9rem; }
+    .ended-message { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>بث مباشر - فريق صقور بادان</header>
+
+<div class="video-container">
+  <!-- Facebook SDK -->
+  <div id="fb-root"></div>
+  <div class="fb-video" 
+       data-href="https://www.facebook.com/suqoorbadan.football.ye/videos/2037885517008843/" 
+       data-width="560" 
+       data-show-text="false" 
+       data-autoplay="true"
+       data-muted="true">
+  </div>
+
+  <div class="ended-message" id="endedMessage">انتهى البث المباشر</div>
+
+  <div class="video-info">
+    <h2>مباراة اليوم - بث مباشر</h2>
+    <div class="video-controls">
+      <button id="likeBtn" aria-label="إعجبني">👍 أعجبني</button>
+      <button id="shareBtn" aria-label="مشاركة">🔗 مشاركة</button>
+      <div id="likeParticles"></div>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 صقور بادان. جميع الحقوق محفوظة.</footer>
+
+<!-- Facebook SDK -->
+<script async defer crossorigin="anonymous" 
+src="https://connect.facebook.net/ar_AR/sdk.js#xfbml=1&version=v17.0"></script>
+
+<script>
+  // --- Facebook SDK Initialization ---
+  window.fbAsyncInit = function() {
+    FB.init({
+      xfbml: true,
+      version: 'v17.0'
+    });
+
+    // رسالة انتهاء البث
+    FB.Event.subscribe('xfbml.ready', function(msg) {
+        if (msg.type === 'video') {
+            const player = msg.instance;
+            if (player && player.subscribe) {
+                player.subscribe('finishedPlaying', function() {
+                    document.getElementById('endedMessage').style.display = "flex";
+                });
+            }
+        }
+    });
+  };
+
+  // --- زر الإعجاب مع فقاعات محسنة ---
+  const likeBtn = document.getElementById('likeBtn');
+  const likeParticles = document.getElementById('likeParticles');
+
+  likeBtn.addEventListener('click', () => {
+    const rect = likeBtn.getBoundingClientRect();
+    const parentRect = likeParticles.getBoundingClientRect();
+    const count = Math.floor(Math.random() * 3) + 3; // 3 إلى 5 فقاعات
+
+    for (let i = 0; i < count; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'likeParticle';
+      particle.textContent = '👍';
+      particle.style.left = (rect.left - parentRect.left + rect.width/2 + (Math.random()*30-15)) + 'px';
+      particle.style.top = (rect.top - parentRect.top) + 'px';
+      particle.style.fontSize = (Math.random()*10 + 22) + 'px';
+      particle.style.transform = `rotate(${Math.random()*60-30}deg)`;
+      likeParticles.appendChild(particle);
+
+      setTimeout(() => particle.remove(), 1500);
+    }
+
+    // تأثير بصري على الزر
+    likeBtn.classList.add('like-active');
+    setTimeout(() => likeBtn.classList.remove('like-active'), 500);
+  });
+
+  // --- زر المشاركة ---
+  const shareBtn = document.getElementById('shareBtn');
+  shareBtn.addEventListener('click', () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      navigator.share({title:'بث مباشر - فريق صقور بادان', url});
+    } else {
+      prompt("انسخ الرابط وشاركه:", url);
+    }
+  });
+</script>
+
+</body>
+</html>
